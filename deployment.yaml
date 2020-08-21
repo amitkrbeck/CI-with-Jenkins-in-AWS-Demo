@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: amittomcat
-        image: amitkrbeck/sp6k8s:latest
+        image: amitkrbeck/demotomcat1:latest
         ports:
         - containerPort: 8080
 ---
