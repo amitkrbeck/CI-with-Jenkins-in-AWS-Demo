@@ -2,12 +2,12 @@ pipeline {
         agent any
         environment {
             registry = "amitkrbeck/sp6k8s"
-            registryCredential = 'docker-cred'
+            registryCredential = 'dockerhub'
             dockerImage = ''
-		PROJECT_ID = 'sigma-bay-285717'
- 		CLUSTER_NAME = 'kube-demo'
+		PROJECT_ID = 'ace-apex-278213'
+ 		CLUSTER_NAME = 'amit-k8s-cluster'
  		LOCATION = 'us-central1-c'
- 		CREDENTIALS_ID = 'sprint6-k8'
+ 		CREDENTIALS_ID = 'amit-k8-cluster'
         }
 		
 	    stages {	
