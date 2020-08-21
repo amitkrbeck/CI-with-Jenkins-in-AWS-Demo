@@ -15,35 +15,7 @@ pipeline {
 			steps {
 	                  checkout scm
 			}	
-	           }
-	           
-		   stage('Build') { 
-	                steps {
-	                  echo "Cleaning and packaging..."
-	                  sh 'mvn clean package'		
-	                }
-	           }
-		   stage('Test') { 
-			steps {
-		          echo "Testing..."
-			  sh 'mvn test'
-			}
-		   }
-		   stage('Build Docker Image') { 
-			steps {
-	                   script {
-	                      dockerImage = docker.build registry + ":$BUILD_NUMBER"
-	                   }
-	                }
-		   }
-            stage('Deploy Image') {
-                steps{
-                    script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                    }
-                    }
-                }
+	           }     
             }
 	           stage('Deploy to GKE') {
  			steps{
