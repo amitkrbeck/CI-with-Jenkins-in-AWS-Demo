@@ -1,7 +1,7 @@
 pipeline {
         agent any
         environment {
-            registry = "amitkrbeck/sp6k8s"
+            registry = "amitkrbeck/demotomcat1"
             registryCredential = 'dockerhub'
             dockerImage = ''
 		PROJECT_ID = 'ace-apex-278213'
@@ -15,7 +15,34 @@ pipeline {
 			steps {
 	                  checkout scm
 			}	
-	           }     
+	           }
+	           
+		   stage('Build') { 
+	                steps {
+	                  echo "Cleaning and packaging..."
+	                  		
+	                }
+	           }
+		   stage('Test') { 
+			steps {
+		          echo "Testing..."
+			  }
+		   }
+		   stage('Build Docker Image') { 
+			steps {
+	                   script {
+	                      dockerImage = docker.build registry + ":$BUILD_NUMBER"
+	                   }
+	                }
+		   }
+            stage('Deploy Image') {
+                steps{
+                    script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                    }
+                }
             }
 	           stage('Deploy to GKE') {
  			steps{
@@ -26,7 +53,8 @@ pipeline {
 				step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID,
 				      clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml',
 				      credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-				echo "Deployment Completed"
+				echo "Deployment Finished"
  	            }
 	          }
 	    }
+	}
